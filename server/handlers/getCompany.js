@@ -11,17 +11,17 @@ const options = {
 };
 
 const getCompanyById = async (req, res) => {
+  const companyId = parseInt(req.params.companyId);
   const client = new MongoClient(MONGO_URI, options);
 
   try {
     //connect to db
     await client.connect();
 
-    const _id = await req.params.id;
     const db = client.db("groupproject");
     console.log("connected");
 
-    const result = await db.collection("companies").findOne({ _id });
+    const result = await db.collection("companies").findOne({ _id: companyId });
 
     console.log(result);
 
@@ -30,7 +30,7 @@ const getCompanyById = async (req, res) => {
     }
     res.status(404).json({ status: 404, message: "company not found" });
   } catch (err) {
-    res.status(500).json({ status: 500, message: err });
+    console.log(err);
   } finally {
     client.close();
     console.log("disconnected");
