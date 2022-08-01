@@ -7,7 +7,7 @@ const PORT = 4000;
 const { getItems } = require("./handlers/getItems");
 const { getItemById } = require("./handlers/getItemById");
 const { getNumOfItems } = require("./handlers/getNumOfItems");
-
+const { addCartItem } = require("./handlers/postCartItem");
 express()
   .use(function (req, res, next) {
     res.header(
@@ -31,4 +31,5 @@ express()
   .get("/api/get-items", getItems)
   .get("/api/get-item/:itemId", getItemById)
   .get("/api/get-some-items", getNumOfItems)
+  .post("/api/add-cart-item", addCartItem)
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
