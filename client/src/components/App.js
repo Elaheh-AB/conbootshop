@@ -1,15 +1,25 @@
-import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import GlobalStyles from "../GlobalStyles";
+import NotFound from "../NotFound";
+import Home from "./Home";
 
-function App() {
-  const [bacon, setBacon] = useState(null);
+const App = () => {
+  return (
+    <>
+      <GlobalStyles />
 
-  useEffect(() => {
-    fetch('/bacon')
-      .then(res => res.json())
-      .then(data => setBacon(data));
-  }, []);
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />}>
 
-  return <div>{bacon ? bacon : `...where's my stuff?...`}</div>;
-}
+            {/* use of outlet in Home component exemple to display the component under Header */}
+            {/* <Route path="/" element={<NotFound />} /> */}
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </>
+  );
+};
 
 export default App;
