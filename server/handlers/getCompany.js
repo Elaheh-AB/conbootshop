@@ -23,8 +23,6 @@ const getCompanyById = async (req, res) => {
 
     const result = await db.collection("companies").findOne({ _id: companyId });
 
-    console.log(result);
-
     if (result) {
       res.status(200).json({ status: 200, data: result });
     }
