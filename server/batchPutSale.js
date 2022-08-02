@@ -21,10 +21,11 @@ const createSaleAtt = async () => {
     // connect to the database (db name is provided as an argument to the function)
     const db = client.db(dbName);
     console.log("connected!");
+    //add 0% discount
     const result = await db
     .collection("items")
     .updateMany(
-      {},{ $set: {onSale: false }} ,{upsert:false,
+      {},{ $set: {onSale: 0 }} ,{upsert:false,
         multi:true}
     );
 

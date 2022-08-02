@@ -10,7 +10,7 @@ const options = {
 
 // returns random items
 const getRandomItems = async (req, res) => {
-  const num = 20; //number of random items to be returned
+  const num = 25; //number of random items to be returned
 
   // creates a new client
   const client = new MongoClient(MONGO_URI, options);
@@ -21,11 +21,8 @@ const getRandomItems = async (req, res) => {
     // connect to the database (db name is provided as an argument to the function)
     const db = client.db(dbName);
     console.log("connected!");
-    const items = await db.collection("items").find().toArray();
-    //shuffle items in the array
-    const shuffled = [...items].sort(() => 0.5 - Math.random());
-    //get some random items
-    const randomItems = shuffled.slice(0, num);
+    //get some random items from db
+    const items = await db.collection("items").aggregate([ { $sample: { size:num } } ]).toArray();
     // On success/no error, send
     if (items.length !== 0) {
       res
@@ -33,7 +30,7 @@ const getRandomItems = async (req, res) => {
         .json({
           status: 200,
           message: "random items sended",
-          data: randomItems,
+          data: items,
         });
     } else {
       // on failure/error, send

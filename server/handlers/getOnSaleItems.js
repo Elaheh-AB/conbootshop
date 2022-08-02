@@ -19,8 +19,8 @@ const getOnSaleItems = async (req, res) => {
     // connect to the database (db name is provided as an argument to the function)
     const db = client.db(dbName);
     console.log("connected!");
-    //only return an item if its onSale value is true
-    const items = await db.collection("items").find({ onSale: true }).toArray();
+    //only return an item if its onSale value is greater than 0%
+    const items = await db.collection("items").find({ onSale:{ $gt: 0 } }).toArray();
     // On success/no error, send
     if (items.length!==0) {
       res.status(200).json({ status: 200,message:"onSale items found", data: items });
