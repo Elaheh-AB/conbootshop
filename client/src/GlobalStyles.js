@@ -78,10 +78,16 @@ export default createGlobalStyle`
         font-family: var(--font-family);
         color: var(--font-color);
         border: none;
+        border-radius:5px;
         outline: 1px solid var(--font-color);
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 
         :hover {
             cursor:pointer;
+            background: var(--warning);
+            transition: 0.5s ease-in-out;
+            outline: 1px solid var(--warning);
         }
     }
 
@@ -97,12 +103,17 @@ export default createGlobalStyle`
         }
       
         &.active {
-          color: var(--primary-color);
-          background: var(--secondary-color);
+            text-decoration: underline;
+            text-underline-offset: 4px;
         }
     }
 
     a,button,small,bold,text,svg {
         font-size: 1.25em;
+    }
+
+    input[type="text"] {
+        height:25px;
+        font-size: var(--font-size)
     }
 `;
