@@ -7,8 +7,12 @@ const NotFound = () => {
   return (
     <Wrapper>
       <Title> Not NotFound </Title>
-      <Return className=" secondary round" type="button" onClick={() => navigate(`/`)}>
-        Return Meow Back
+      <Return
+        className=" secondary round"
+        type="button"
+        onClick={() => navigate(`/`)}
+      >
+        Return to Home page
       </Return>
     </Wrapper>
   );
@@ -29,6 +33,6 @@ const Title = styled.h1`
 
 const Return = styled.button`
   z-index: 999;
-  margin-top:200px;
+  margin-top: 200px;
 `;
 export default NotFound;
