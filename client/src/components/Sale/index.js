@@ -3,28 +3,38 @@ import { BsCartPlus } from "react-icons/bs";
 import { ProductsContext } from "../../ProductsContext";
 import { useEffect, useContext } from "react";
 import Loading from "../../Loading";
-
-const Products = ({ start, limit }) => {
+const Sale = ({}) => {
   const {
-    state: { products, status },
-    actions: { receiveProductsFromServer, errorFromServer },
+    state: { onSaleproducts, status },
+    actions: { receiveOnSaleProductsFromServer, errorFromServer },
   } = useContext(ProductsContext);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      await fetch(`/api/get-items?start=${start}&limit=${limit}`)
+    const fetchOnSaleProducts = async () => {
+      await fetch("/api/get-onSale-items")
         .then((res) => res.json())
         .then((data) => {
-          receiveProductsFromServer(data, { status: 200 });
+          receiveOnSaleProductsFromServer(data, { status: 200 });
         })
         .catch((err) => {
           errorFromServer(err);
           return console.log({ status: "error" });
         });
     };
-    fetchProducts();
+    fetchOnSaleProducts();
   }, []);
 
+  const discountCalc = (price, discount) => {
+    //change price from string to float
+    const floatPrice = price.substr(1).replace(",", ".") * 1;
+    //calculate discounted price
+    const discountedPrice = floatPrice - floatPrice * (discount / 100);
+    //change float price to string price format
+    const finalPrice = discountedPrice.toLocaleString("en-us", {
+      minimumFractionDigits: 2,
+    });
+    return finalPrice;
+  };
   const handleSubmit = (isBuyNow, productId) => {
     if (isBuyNow) {
       //add to cart
@@ -37,13 +47,10 @@ const Products = ({ start, limit }) => {
 
   return (
     <>
-      {}
+      {status === "loading" && <Loading />}
       <Wrapper>
-        {status === "loading" ? (
-          <Loading />
-        ) : (
-          products &&
-          products.map((product) => {
+        {onSaleproducts &&
+          onSaleproducts.map((product) => {
             return (
               <CardWrapper
                 className="card"
@@ -64,7 +71,9 @@ const Products = ({ start, limit }) => {
                   key={`contentWrapper-${product._id}`}
                 >
                   <PriceTag>{product.price}</PriceTag>
-
+                  <OnSalePriceTag>
+                    ${discountCalc(product.price, product.onSale)}
+                  </OnSalePriceTag>
                   <h2 key={`h2-${product._id}`}>{product.name}</h2>
 
                   <DescriptionWrapper
@@ -110,8 +119,7 @@ const Products = ({ start, limit }) => {
                 </ContentWrapper>
               </CardWrapper>
             );
-          })
-        )}
+          })}
       </Wrapper>
     </>
   );
@@ -277,8 +285,12 @@ const ActionsWrapper = styled.div`
 const PriceTag = styled.h2`
   padding-bottom: 10px;
   font-size: 1.5em;
+  text-decoration: line-through;
 `;
-
+const OnSalePriceTag = styled.h2`
+  padding-bottom: 10px;
+  font-size: 1.5em;
+`;
 const ButtonBuyNow = styled.button`
   height: 30px;
   font-size: 20px;
@@ -289,4 +301,4 @@ const ButtonAddCart = styled.button`
   height: 30px;
 `;
 
-export default Products;
+export default Sale;

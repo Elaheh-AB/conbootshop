@@ -13,7 +13,7 @@ const Header = () => {
           <img src="\logo-no-bg.png" alt="logo - return home page" />
         </NavigationLinkLogo>
         <NavigationLink to="/products">Products</NavigationLink>
-
+        <NavigationLink to="/onSale">Sale</NavigationLink>
         <WrapperCategories>
           <ButtonCategories to="/category">Category</ButtonCategories>
           <DropdownContent className="dropdown-content">

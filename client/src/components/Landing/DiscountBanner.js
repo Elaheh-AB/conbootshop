@@ -11,7 +11,7 @@ const DiscountBanner = () => {
       <SecondSection>
         <h3>Sale!</h3>
         <p>10% Off On All Products!</p>
-        <NavigationLink to="/discount">Shop Now</NavigationLink>
+        <NavigationLink to="/onSale">Shop Now</NavigationLink>
       </SecondSection>
     </Wrapper>
   );
