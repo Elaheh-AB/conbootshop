@@ -142,7 +142,7 @@ const Wrapper = styled.div`
 
   .card:hover .imgBx {
     top: 1%;
-    transform: translateY(-25%) scale(0.8);
+    transform: translateY(-25%) scale(0.6);
   }
 
   .card:hover .stats,
@@ -255,7 +255,7 @@ const DescriptionWrapper = styled.div`
 
   h3 {
     color: (--font-color);
-    font-weight: 300;
+    font-weight: 200;
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -291,12 +291,12 @@ const ActionsWrapper = styled.div`
 
 const PriceTag = styled.h2`
   padding-bottom: 10px;
-  font-size: 1.5em;
+  font-size: 1em;
   text-decoration: line-through;
 `;
 const OnSalePriceTag = styled.h2`
   padding-bottom: 10px;
-  font-size: 1.5em;
+  font-size: 1.25em;
 `;
 const ButtonBuyNow = styled.button`
   height: 30px;

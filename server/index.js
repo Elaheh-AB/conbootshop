@@ -14,6 +14,7 @@ const { getOnSaleItems } = require("./handlers/getOnSaleItems");
 const { updateItemNum } = require("./handlers/patchItemNumInStock");
 const { getCartById } = require("./handlers/getCartById");
 const { addPurchase } = require("./handlers/postPurchase");
+const { getPurchaseByUserId } = require("./handlers/getPurchase");
 express()
   .use(function (req, res, next) {
     res.header(
@@ -39,6 +40,7 @@ express()
   .get("/api/get-onSale-items", getOnSaleItems)
   .get("/api/get-item/:itemId", getItemById)
   .get("/api/get-cart/:cartId", getCartById)
+  .get("/api/get-purchase/:userId", getPurchaseByUserId)
   .post("/api/add-cart-item", addCartItem)
   .post("/api/add-purchase", addPurchase)
   .get("/api/get-company/:companyId", getCompanyById)
