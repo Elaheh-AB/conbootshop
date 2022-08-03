@@ -4,7 +4,7 @@ export const UserContext = createContext(null);
 
 const initialState = {
   currentUser: null,
-  userBuyingHistory: null,
+  purchasesHistory: null,
   status: "loading",
 };
 
@@ -20,7 +20,13 @@ const reducer = (state, action) => {
     case "get-user-buying-history": {
       return {
         ...state,
-        userBuyingHistory: action.data,
+        purchasesHistory: action.data,
+        status: action.status,
+      };
+    }
+    case "set-loading": {
+      return {
+        ...state,
         status: action.status,
       };
     }
@@ -40,20 +46,26 @@ export const UserProvider = ({ children }) => {
     });
   };
 
-  const getUserBuyingHistory = async (data) => {
-    await fetch("/api/purchases/" + state.currentUser._id)
+  const setLoading = (data) => {
+    dispatch({
+      type: "set-loading",
+      ...data,
+    });
+  };
+
+  const getUserBuyingHistory = async () => {
+    await fetch("/api/get-purchase/" + state.currentUser._id)
       .then((response) => response.json())
       .then((buying) => {
-        console.log(buying);
+        dispatch({
+          type: "get-user-buying-history",
+          ...buying,
+          status: "idle",
+        });
       })
       .catch((err) => {
         console.log(err);
       });
-
-    dispatch({
-      type: "get-user-buying-history",
-      ...data,
-    });
   };
 
   return (
@@ -63,6 +75,7 @@ export const UserProvider = ({ children }) => {
         actions: {
           loginUser,
           getUserBuyingHistory,
+          setLoading,
         },
       }}
     >
