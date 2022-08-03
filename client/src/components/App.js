@@ -7,11 +7,35 @@ import Sale from "./Sale";
 import Profile from "./Profile";
 import Cart from "./Cart";
 import Landing from "./Landing";
+import { useEffect, useContext } from "react";
+import { UserContext } from "../UserContext";
 
 import Confirmation from "./Confirmation";
 
 const App = () => {
-return (
+  const {
+    state: { currentUser, status },
+    actions: { loginUser },
+  } = useContext(UserContext);
+
+  useEffect(() => {
+    //Login a fake user with a cart_id that exist in MongoDb
+    const fetchUser = async () => {
+      await loginUser({
+        currentUser: {
+          _id: "82638433-3b75-4969-a0e8-2969b3872cf2",
+          name: "Richard Belliveau",
+          email: "richard.belivo@gmail.com",
+          cartId: "82638433-3b75-4969-a0e8-2969b3872cf8",
+        },
+        status: "idle",
+      });
+    };
+    fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
     <>
       <GlobalStyles />
       <Router>
