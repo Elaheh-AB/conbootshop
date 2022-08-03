@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { useState } from "react";
+
 const Header = () => {
   const [toggle, setToggle] = useState(false);
 
