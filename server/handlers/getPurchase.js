@@ -21,7 +21,7 @@ const getPurchaseByUserId = async (req, res) => {
     // connect to the database (db name is provided as an argument to the function)
     const db = client.db(dbName);
     console.log("connected!");
-    const result = await db.collection("purchases").findOne({ userId:userId });
+    const result = await db.collection("purchases").find({ userId:userId }).toArray();
     // On success/no error, send
     if (result) {
       return res.status(200).json({ status: 200, userId, message: "success", data: result });
