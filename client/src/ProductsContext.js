@@ -5,6 +5,7 @@ export const ProductsContext = createContext(null);
 const initialState = {
   products: null,
   selectedProduct: null,
+  onSaleProducts:null,
   status: "loading",
 };
 
@@ -14,6 +15,13 @@ const reducer = (state, action) => {
       return {
         ...state,
         products: action.data,
+        status: action.status,
+      };
+    }
+    case "receive-onSale-products-from-server": {
+      return {
+        ...state,
+        onSaleproducts: action.data,
         status: action.status,
       };
     }
@@ -38,7 +46,12 @@ export const ProductsProvider = ({ children }) => {
       ...data,
     });
   };
-
+  const receiveOnSaleProductsFromServer = (data) => {
+    dispatch({
+      type: "receive-onSale-products-from-server",
+      ...data,
+    });
+  };
   const errorFromServer = (data) => {
     dispatch({
       type: "error-from-server",
@@ -52,6 +65,7 @@ export const ProductsProvider = ({ children }) => {
         state,
         actions: {
           receiveProductsFromServer,
+          receiveOnSaleProductsFromServer,
           errorFromServer,
         },
       }}
