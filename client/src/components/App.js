@@ -8,6 +8,7 @@ import Products from "./Products";
 import Loading from "../Loading";
 import Profile from "./Profile";
 import Cart from "./Cart";
+import Landing from "./Landing";
 
 const App = () => {
   const {
@@ -37,6 +38,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Home />}>
+            <Route path="/" element={<Landing />} />
             <Route
               path="/products"
               element={<Products products={products} />}

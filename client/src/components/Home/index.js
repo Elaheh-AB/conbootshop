@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   flex-wrap: nowrap;
   align-content: center;
-  padding: 5px var(--page-horizontal-padding);
+  padding: 0 var(--page-horizontal-padding);
   max-width: 1400px;
   margin: 0 auto;
 `;

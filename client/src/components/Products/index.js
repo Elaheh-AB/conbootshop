@@ -70,7 +70,7 @@ const Products = ({ products }) => {
                     onClick={() => handleSubmit(true, product._id)}
                     key={`buttonBuyNow-${product._id}`}
                   >
-                    Add to cart
+                    Buy Now
                   </ButtonBuyNow>
 
                   <ButtonAddCart
@@ -256,7 +256,7 @@ const ButtonBuyNow = styled.button`
 `;
 const ButtonAddCart = styled.button`
   font-size: 20px;
-  margin-left: 5px;
+  margin-left: 20px;
   height: 30px;
 `;
 

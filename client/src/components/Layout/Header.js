@@ -10,7 +10,7 @@ const Header = () => {
     <Wrapper>
       <WrapperFirstSection>
         <NavigationLinkLogo to="/">
-          <img src="\logo.png" alt="logo - return home page" />
+          <img src="\logo-no-bg.png" alt="logo - return home page" />
         </NavigationLinkLogo>
         <NavigationLink to="/products">Products</NavigationLink>
 
@@ -53,6 +53,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   height: var(--header-height);
   overflow: hidden;
+  background: white;
 `;
 
 const WrapperFirstSection = styled.div`
@@ -118,7 +119,7 @@ const ButtonCategories = styled.button`
   }
 
   :hover + .dropdown-content {
-    display: block !important;
+    display: block;
   }
 `;
 
@@ -127,7 +128,7 @@ const NavigationLinkLogo = styled(NavLink)`
   background: transparent !important;
 
   img {
-    height: 75px;
+    height: 150px;
   }
 `;
 export default Header;
