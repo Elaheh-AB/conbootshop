@@ -11,6 +11,7 @@ const { addCartItem } = require("./handlers/postCartItem");
 const { getCompanyById } = require("./handlers/getCompany");
 const { updateCart } = require("./handlers/patchCartItem");
 const { getOnSaleItems } = require("./handlers/getOnSaleItems");
+const { updateItemNum } = require("./handlers/patchItemNumInStock");
 express()
   .use(function (req, res, next) {
     res.header(
@@ -38,4 +39,5 @@ express()
   .post("/api/add-cart-item", addCartItem)
   .get("/api/get-company/:companyId", getCompanyById)
   .patch("/api/update-cart", updateCart)
+  .patch("/api/update-item-num", updateItemNum)
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
