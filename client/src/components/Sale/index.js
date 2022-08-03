@@ -58,6 +58,7 @@ const Sale = ({}) => {
                 key={`card-${product._id}`}
               >
                 <ImgWrapper className="imgBx" key={`card-${product._id}`}>
+
                   <img
                     src={product.imageSrc}
                     alt={product.name}
@@ -141,7 +142,7 @@ const Wrapper = styled.div`
 
   .card:hover .imgBx {
     top: 1%;
-    transform: translateY(-25%) scale(0.9);
+    transform: translateY(-25%) scale(0.8);
   }
 
   .card:hover .stats,
@@ -203,7 +204,13 @@ const ImgWrapper = styled.div`
   width: 100%;
   height: 100%;
   transition: 0.5s;
-
+span{
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  text-align: center;
+  border-radius: 5px;
+}
   img {
     position: absolute;
     top: 50%;
