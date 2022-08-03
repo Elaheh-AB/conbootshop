@@ -10,6 +10,8 @@ import Profile from "./Profile";
 import Cart from "./Cart";
 import Landing from "./Landing";
 
+import Confirmation from "./Confirmation";
+
 const App = () => {
   const {
     state: { products, status },
@@ -18,7 +20,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      await fetch("/api/get-some-items")
+      await fetch("/api/get-items")
         .then((res) => res.json())
         .then((data) => {
           receiveProductsFromServer(data, { status: 200 });
@@ -45,6 +47,7 @@ const App = () => {
             />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/confirmation" element={<Confirmation />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
