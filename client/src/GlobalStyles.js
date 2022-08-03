@@ -10,9 +10,9 @@ export default createGlobalStyle`
       --warning: #F1D302;
       --font-color: #020100;
       --success: #ffc93c;
-      --bg-color: rgba(204, 85, 0, 0.1);
+      --bg-color: #efefef;
       --page-horizontal-padding: 20px;
-      --header-height: 75px;
+      --header-height: 100px;
       --max-content-width: 1200px;
       --font-family: 'Raleway', sans-serif;
     }
@@ -46,6 +46,7 @@ export default createGlobalStyle`
     }
     body {
         line-height: 1;
+        background: var(--bg-color);
     }
     ol, ul {
         list-style: none;
