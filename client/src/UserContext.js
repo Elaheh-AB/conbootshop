@@ -40,9 +40,8 @@ export const UserProvider = ({ children }) => {
     });
   };
 
-  const getUserBuyingHistory = async(data) => {
-   
-    await fetch("/api/users/new")
+  const getUserBuyingHistory = async (data) => {
+    await fetch("/api/purchases/" + state.currentUser._id)
       .then((response) => response.json())
       .then((buying) => {
         console.log(buying);
@@ -50,7 +49,6 @@ export const UserProvider = ({ children }) => {
       .catch((err) => {
         console.log(err);
       });
-  
 
     dispatch({
       type: "get-user-buying-history",

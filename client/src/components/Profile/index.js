@@ -1,12 +1,20 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { UserContext } from "../../UserContext";
 
 const Profile = () => {
   const {
     state: { currentUser },
-    actions: {},
+    actions: { getUserBuyingHistory },
   } = useContext(UserContext);
+
+  useEffect(() => {
+    const history = async () => {
+      const historyArray = await getUserBuyingHistory();
+      console.log(historyArray);
+    };
+    history();
+  }, [currentUser]);
 
   return (
     <Wrapper>
