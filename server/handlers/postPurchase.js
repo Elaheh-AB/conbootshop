@@ -10,9 +10,10 @@ const options = {
 // use this package to generate unique ids: https://www.npmjs.com/package/uuid
 const { v4: uuidv4 } = require("uuid");
 
-// add new item to cart
-const addCartItem = async (req, res) => {
-  const itemIds=req.body.itemIds;
+// add new purchase to db
+const addPurchase = async (req, res) => {
+  const itemIds = req.body.itemIds;//ids of purchased items by user
+  const userId = req.body.userId;// the id of user who did the purchase
   // creates a new client
   const client = new MongoClient(MONGO_URI, options);
   try {
@@ -23,22 +24,22 @@ const addCartItem = async (req, res) => {
     const db = client.db(dbName);
     console.log("connected!");
     const result = await db
-      .collection("cart")
-      .insertOne({itemIds, _id: uuidv4() });
+      .collection("purchases")
+      .insertOne({ itemIds, userId, _id: uuidv4() });
 
     // On success/no error, send
     if (result.acknowledged) {
       //send back id to store in local storage
-      return res
-        .status(201)
-        .json({
-          status: 201,
-          message: "new cart created and item(s) added to cart",
-          cartId: result.insertedId,
-        });
+      return res.status(201).json({
+        status: 201,
+        message: "purchase completed",
+        purchaseId: result.insertedId,
+      });
     } else {
       // on failure/error, send
-      return res.status(404).json({ status: 404, message: "can't add item" });
+      return res
+        .status(404)
+        .json({ status: 404, message: "can't complete the purchase" });
     }
   } catch (err) {
     console.log(err);
@@ -49,5 +50,5 @@ const addCartItem = async (req, res) => {
 };
 
 module.exports = {
-  addCartItem,
+  addPurchase,
 };
