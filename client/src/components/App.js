@@ -8,8 +8,10 @@ import Profile from "./Profile";
 import Cart from "./Cart";
 import Landing from "./Landing";
 
+import Confirmation from "./Confirmation";
+
 const App = () => {
-  return (
+return (
     <>
       <GlobalStyles />
       <Router>
@@ -23,6 +25,7 @@ const App = () => {
             <Route path="/onSale" element={<Sale />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/confirmation" element={<Confirmation />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
