@@ -4,6 +4,7 @@ export const UserContext = createContext(null);
 
 const initialState = {
   currentUser: null,
+  purchasesHistory: null,
   status: "loading",
 };
 
@@ -11,7 +12,21 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "login-user": {
       return {
+        ...state,
         currentUser: action.currentUser,
+        status: action.status,
+      };
+    }
+    case "get-user-buying-history": {
+      return {
+        ...state,
+        purchasesHistory: action.data,
+        status: action.status,
+      };
+    }
+    case "set-loading": {
+      return {
+        ...state,
         status: action.status,
       };
     }
@@ -31,12 +46,36 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const setLoading = (data) => {
+    dispatch({
+      type: "set-loading",
+      ...data,
+    });
+  };
+
+  const getUserBuyingHistory = async () => {
+    await fetch("/api/get-purchase/" + state.currentUser._id)
+      .then((response) => response.json())
+      .then((buying) => {
+        dispatch({
+          type: "get-user-buying-history",
+          ...buying,
+          status: "idle",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <UserContext.Provider
       value={{
         state,
         actions: {
           loginUser,
+          getUserBuyingHistory,
+          setLoading,
         },
       }}
     >
