@@ -5,10 +5,13 @@ import { useEffect, useContext } from "react";
 import Loading from "../../Loading";
 import { CartContext } from "../../CartContext";
 
-const Products = ({ start, limit }) => {
+const Products = ({ start, limit, discount }) => {
   const {
     state: { products, status },
-    actions: { receiveProductsFromServer, errorFromServer },
+    actions: {
+      receiveProductsFromServer,
+      errorFromServer,
+    },
   } = useContext(ProductsContext);
 
   const {
@@ -28,10 +31,36 @@ const Products = ({ start, limit }) => {
           return console.log({ status: "error" });
         });
     };
-    fetchProducts();
-  }, []);
-
+    const fetchOnSaleProducts = async () => {
+      await fetch("/api/get-onSale-items")
+        .then((res) => res.json())
+        .then((data) => {
+          receiveProductsFromServer(data, { status: 200 });
+        })
+        .catch((err) => {
+          errorFromServer(err);
+          return console.log({ status: "error" });
+        });
+    };
+    if (discount === true) {
+      fetchOnSaleProducts();
+    } else {
+      fetchProducts();
+    }
+  }, [discount]);
+  const discountCalc = (price, discount) => {
+    //change price from string to float
+    const floatPrice = price.substr(1).replace(",", ".") * 1;
+    //calculate discounted price
+    const discountedPrice = floatPrice - floatPrice * (discount / 100);
+    //change float price to string price format
+    const finalPrice = discountedPrice.toLocaleString("en-us", {
+      minimumFractionDigits: 2,
+    });
+    return finalPrice;
+  };
   const handleSubmit = async (isBuyNow, productId) => {
+
     const qty = 1;
     const product = { itemId: productId.toString(), quantity: qty.toString() };
 
@@ -45,12 +74,10 @@ const Products = ({ start, limit }) => {
 
   return (
     <>
-      {}
+      
       <Wrapper>
-        {status === "loading" ? (
-          <Loading />
-        ) : (
-          products &&
+        {status === "loading" && <Loading />}
+        {products &&
           products.map((product) => {
             return (
               <CardWrapper
@@ -71,8 +98,18 @@ const Products = ({ start, limit }) => {
                   className="contentBx"
                   key={`contentWrapper-${product._id}`}
                 >
-                  <PriceTag>{product.price}</PriceTag>
-
+                  <WrapperPrice>
+                    {discount === false && <PriceTag>{product.price}</PriceTag>}
+                    {discount === true && (
+                      <>
+                        {" "}
+                        <LastPriceTag>{product.price}</LastPriceTag>
+                        <OnSalePriceTag>
+                          ${discountCalc(product.price, product.onSale)}
+                        </OnSalePriceTag>
+                      </>
+                    )}
+                  </WrapperPrice>
                   <h2 key={`h2-${product._id}`}>{product.name}</h2>
 
                   <DescriptionWrapper
@@ -118,8 +155,7 @@ const Products = ({ start, limit }) => {
                 </ContentWrapper>
               </CardWrapper>
             );
-          })
-        )}
+          })}
       </Wrapper>
     </>
   );
@@ -296,5 +332,18 @@ const ButtonAddCart = styled.button`
   margin-left: 20px;
   height: 30px;
 `;
-
+const WrapperPrice = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const LastPriceTag = styled.h2`
+  padding-bottom: 10px;
+  font-size: 1em;
+  text-decoration: line-through;
+`;
+const OnSalePriceTag = styled.h2`
+  padding-bottom: 10px;
+  font-size: 1.25em;
+`;
 export default Products;
