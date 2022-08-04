@@ -6,6 +6,7 @@ import { CartContext } from "../../CartContext";
 
 const Cart = () => {
   const {
+    total,
     state: { itemIds, items, status },
     actions: {
       fetchCartItems,
@@ -15,6 +16,11 @@ const Cart = () => {
     },
   } = useContext(CartContext);
 
+  // const changeTotal = (data) => {
+  //   setCartTotal(data);
+  // };
+  console.log(items, "ITEMS");
+  console.log(itemIds, "IDS");
   return (
     <Wrapper>
       <h2>Your Cart</h2>
@@ -38,7 +44,7 @@ const Cart = () => {
               />
             );
           })}
-        <CartFooter />
+        <CartFooter total={total} />
       </CartContainer>
     </Wrapper>
   );
