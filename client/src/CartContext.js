@@ -182,7 +182,6 @@ export const CartProvider = ({ children }) => {
 
     //finding index of element to delete in itemIds
     const newArray = state.itemIds.filter((item) => item.itemId != data.itemId);
-    console.log("new array", newArray);
 
     objectToSave = {
       _id: state.id,
@@ -220,9 +219,7 @@ export const CartProvider = ({ children }) => {
   };
 
   let total = 0;
-  console.log(state.items, "state");
   state.items.forEach((item) => {
-    console.log(item, "FRITEM");
     let quantity = state.itemIds.find(
       (id) => Number(id.itemId) === item._id
     )?.quantity;
