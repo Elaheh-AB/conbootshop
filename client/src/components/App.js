@@ -9,7 +9,7 @@ import Cart from "./Cart";
 import Landing from "./Landing";
 import { useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
-
+import { CartContext } from "../CartContext";
 import Confirmation from "./Confirmation";
 
 const App = () => {
@@ -17,6 +17,11 @@ const App = () => {
     state: { currentUser, status },
     actions: { loginUser },
   } = useContext(UserContext);
+
+  const {
+    state: {},
+    actions: { getCartInfoFromDb, errorFromServer },
+  } = useContext(CartContext);
 
   useEffect(() => {
     //Login a fake user with a cart_id that exist in MongoDb
@@ -34,6 +39,20 @@ const App = () => {
     fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const fetchCartById = async () => {
+      await fetch(`/api/get-cart/${currentUser.cartId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          getCartInfoFromDb(data, { status: "idle" });
+        })
+        .catch((error) => {
+          errorFromServer(error);
+        });
+    };
+    currentUser && fetchCartById();
+  }, [currentUser]);
 
   return (
     <>

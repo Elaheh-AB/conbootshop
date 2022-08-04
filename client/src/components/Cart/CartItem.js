@@ -8,6 +8,7 @@ const CartItem = ({
   item,
   itemQuantity,
   updateCartQuantity,
+  deleteCartItem,
 }) => {
   const idFix = Number(id);
 
@@ -17,18 +18,23 @@ const CartItem = ({
 
   useEffect(() => {
     fetchCartItem();
-  }, [id]);
+  }, []);
 
-  // const handleQuantityChange = async (e) => {
-  //   const product = { _id: idFix, quantity: e.target.value };
-  //   await updateCartQuantity(product);
-  // };
+  const handleQuantityChange = async (e) => {
+    e.preventDefault();
 
+    const product = { itemId: idFix, quantity: e.target.value };
+
+    if (e.target.value > 0) {
+      await updateCartQuantity(product);
+    } else {
+      await deleteCartItem({ itemId: idFix });
+    }
+  };
   return (
     <>
       {item && (
         <Wrapper>
-          {console.log(item)}
           <ImgWrapper>
             <img src={item.imageSrc} alt={item.name} key={`img-${item._id}`} />
           </ImgWrapper>
@@ -44,7 +50,7 @@ const CartItem = ({
                 max={item.numInStock}
                 type="number"
                 value={itemQuantity}
-                // onChange={(e) => handleQuantityChange(e)}
+                onChange={(e) => handleQuantityChange(e)}
               />
               <label>Quantity</label>
             </QuantityWrapper>
@@ -54,7 +60,7 @@ const CartItem = ({
             </ItemTotal>
             <BsCartX
               className="svg"
-              //  onClick={handleCartClick}
+              onClick={() => deleteCartItem({ itemId: item._id })}
             />
           </StatsWrapper>
         </Wrapper>
@@ -126,23 +132,3 @@ const ItemTotal = styled.div`
   justify-content: space-between;
   width: 25%;
 `;
-
-// const [itemQuantity, setItemQuantity] = useState(item.numInCart);
-// const [itemTotalPrice, setItemTotalPrice] = useState(
-//   Number(item.price.replace("$", ""))
-// );
-
-// const handleQuantityChange = (e) => {
-//   setItemQuantity(e.target.value);
-//   setItemTotalPrice(
-//     (
-//       Math.round(Number(item.price.replace("$", "")) * e.target.value * 100) /
-//       100
-//     ).toFixed(2)
-//   );
-// };
-
-// const handleCartClick = () => {
-//   setItemQuantity(0);
-//   setItemTotalPrice(0.0);
-// };
