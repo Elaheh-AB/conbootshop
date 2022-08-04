@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 const CartFooter = ({ total }) => {
   return (
     <Wrapper>
       <span>Total:</span>
       <span style={{ fontWeight: "bold" }}>{total}$</span>
-      <BuyButton type="button">Buy Now!</BuyButton>
+      <NavLink to="/confirmation">Buy Now!</NavLink>
     </Wrapper>
   );
 };
