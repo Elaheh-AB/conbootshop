@@ -9,6 +9,7 @@ const initialState = {
   itemIds: [],
   status: "loading",
   items: [],
+  total: null,
 };
 
 const reducer = (state, action) => {
@@ -192,9 +193,23 @@ export const CartProvider = ({ children }) => {
       type: "loading",
     });
   };
+
+  let total = 0;
+  console.log(state.items, "state");
+  state.items.forEach((item) => {
+    console.log(item, "FRITEM");
+    let quantity = state.itemIds.find(
+      (id) => Number(id.itemId) === item._id
+    )?.quantity;
+
+    total += Number(item?.price?.replace("$", "")) * quantity;
+    total = Math.round((total + Number.EPSILON) * 100) / 100;
+  });
+
   return (
     <CartContext.Provider
       value={{
+        total,
         state,
         actions: {
           getCartInfoFromDb,

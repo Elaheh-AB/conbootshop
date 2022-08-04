@@ -3,9 +3,12 @@ import { NavLink } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
 import { BsSearch } from "react-icons/bs";
 import { useState } from "react";
+import { useContext } from "react";
+import { CartContext } from "../../CartContext";
 
 const Header = () => {
   const [toggle, setToggle] = useState(false);
+  const { total } = useContext(CartContext);
 
   return (
     <Wrapper>
@@ -39,7 +42,7 @@ const Header = () => {
           <BsSearch />
         </SearchButton>
         <NavigationLink to="/profile">My Account</NavigationLink>
-        <NavigationLink to="/cart"> 0.00$</NavigationLink>
+        <NavigationLink to="/cart"> {total}$</NavigationLink>
         <NavigationLink to="/cart">
           <BsCart />
         </NavigationLink>
