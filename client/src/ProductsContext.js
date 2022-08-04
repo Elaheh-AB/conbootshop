@@ -47,17 +47,13 @@ export const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const receiveProductsFromServer = (data) => {
+    
     dispatch({
       type: "receive-products-from-server",
       ...data,
     });
   };
-  const receiveOnSaleProductsFromServer = (data) => {
-    dispatch({
-      type: "receive-onSale-products-from-server",
-      ...data,
-    });
-  };
+
   const errorFromServer = (data) => {
     dispatch({
       type: "error-from-server",
@@ -77,7 +73,6 @@ export const ProductsProvider = ({ children }) => {
         state,
         actions: {
           receiveProductsFromServer,
-          receiveOnSaleProductsFromServer,
           errorFromServer,
           loadingFunc,
         },
