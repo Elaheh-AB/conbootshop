@@ -58,10 +58,9 @@ const CartItem = ({
               <span>Item Total:</span>
               <span style={{ fontWeight: "bold" }}></span>
             </ItemTotal>
-            <BsCartX
-              className="svg"
-              onClick={() => deleteCartItem({ itemId: item._id })}
-            />
+            <button onClick={() => deleteCartItem({ itemId: item._id })}>
+              <BsCartX className="svg" />
+            </button>
           </StatsWrapper>
         </Wrapper>
       )}

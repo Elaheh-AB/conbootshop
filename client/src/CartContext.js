@@ -22,7 +22,6 @@ const reducer = (state, action) => {
       };
     }
     case "get-cart-items-from-db": {
-      console.log("getCartItem", action);
       return { ...state, items: [...state.items, action.data] };
     }
     case "add-item-to-cart": {
@@ -118,13 +117,10 @@ export const CartProvider = ({ children }) => {
   const addItemToCart = async (data) => {
     let objectToSave = {};
 
+    //finding index of element to update in itemIds
     const index = state.itemIds.findIndex((item) => item.itemId == data.itemId);
 
     if (index >= 0) {
-      //finding index of element to update in itemIds
-      const index = state.itemIds.findIndex(
-        (item) => item.itemId == data.itemId
-      );
       //making a new array
       const newArray = [...state.itemIds];
       //changing value in the new array
@@ -173,11 +169,40 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const deleteCartItem = async (data) => {
+  const successDeleteCartItem = async (data) => {
     dispatch({
       type: "delete-cart-item",
       ...data,
     });
+  };
+  const deleteCartItem = async (data) => {
+    let objectToSave = {};
+    //finding if element exit
+
+    //finding index of element to delete in itemIds
+    const newArray = state.itemIds.filter((item) => item.itemId != data.itemId);
+    console.log("new array", newArray);
+
+    objectToSave = {
+      _id: state.id,
+      itemIds: [...newArray],
+    };
+
+    const params = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(objectToSave),
+    };
+    await fetch(`/api/update-cart`, params)
+      .then((res) => res.json())
+      .then((data) => {
+        successDeleteCartItem(data);
+      })
+      .catch((error) => {
+        errorFromServer(error);
+      });
   };
 
   const errorFromServer = (data) => {

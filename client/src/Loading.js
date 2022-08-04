@@ -37,7 +37,7 @@ const Spinner = styled.div`
   border-top: 5px solid var(--warning);
   border-radius: 50%;
   animation: ${spinning} 1.5s linear infinite;
-  z-index: 999;
+  z-index: 9999;
 `;
 
 const Logo = styled.img`

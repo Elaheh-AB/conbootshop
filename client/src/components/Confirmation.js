@@ -12,7 +12,7 @@ const Confirmation = () => {
       {reservation && (
         <TextWrapper>
           <p>
-            Hello Steeve, <br />
+            Hello Richard Belliveau, <br />
             <br />
             Thank you for your order #1412531345. We appreciate your business
             and will be thrilled to send you all informations related to items
@@ -20,7 +20,7 @@ const Confirmation = () => {
           </p>
 
           <p>Items: #16161651</p>
-          <p>price: $</p>
+          <p>price: $149.99</p>
 
           <p>
             An email with all informations will be sent to you once your order
