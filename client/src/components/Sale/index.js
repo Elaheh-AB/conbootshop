@@ -58,7 +58,6 @@ const Sale = ({}) => {
                 key={`card-${product._id}`}
               >
                 <ImgWrapper className="imgBx" key={`card-${product._id}`}>
-
                   <img
                     src={product.imageSrc}
                     alt={product.name}
@@ -71,10 +70,13 @@ const Sale = ({}) => {
                   className="contentBx"
                   key={`contentWrapper-${product._id}`}
                 >
-                  <PriceTag>{product.price}</PriceTag>
-                  <OnSalePriceTag>
-                    ${discountCalc(product.price, product.onSale)}
-                  </OnSalePriceTag>
+                  <WrapperPrice>
+                    <PriceTag>{product.price}</PriceTag>
+                    <OnSalePriceTag>
+                      ${discountCalc(product.price, product.onSale)}
+                    </OnSalePriceTag>
+                  </WrapperPrice>
+
                   <h2 key={`h2-${product._id}`}>{product.name}</h2>
 
                   <DescriptionWrapper
@@ -204,13 +206,13 @@ const ImgWrapper = styled.div`
   width: 100%;
   height: 100%;
   transition: 0.5s;
-span{
-  background-color: red;
-  color: white;
-  padding: 4px 8px;
-  text-align: center;
-  border-radius: 5px;
-}
+  span {
+    background-color: red;
+    color: white;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 5px;
+  }
   img {
     position: absolute;
     top: 50%;
@@ -289,6 +291,11 @@ const ActionsWrapper = styled.div`
   visibility: hidden;
 `;
 
+const WrapperPrice = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const PriceTag = styled.h2`
   padding-bottom: 10px;
   font-size: 1em;
