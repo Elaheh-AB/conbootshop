@@ -32,14 +32,14 @@ const Products = ({ start, limit }) => {
   }, []);
 
   const handleSubmit = async (isBuyNow, productId) => {
-    const product = { itemId: productId, quantity: 1 };
-    
+    const qty = 1;
+    const product = { itemId: productId.toString(), quantity: qty.toString() };
+
     if (isBuyNow) {
       //add to cart
       console.log("Buy now", product);
     } else {
       await addItemToCart(product);
-      //add to cart
     }
   };
 
