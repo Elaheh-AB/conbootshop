@@ -144,7 +144,7 @@ const Wrapper = styled.div`
 
   .card:hover .imgBx {
     top: 1%;
-    transform: translateY(-25%) scale(0.6);
+    transform: translateY(-25%) scale(0.9);
   }
 
   .card:hover .stats,
