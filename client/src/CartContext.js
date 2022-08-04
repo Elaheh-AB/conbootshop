@@ -22,11 +22,11 @@ const reducer = (state, action) => {
       };
     }
     case "get-cart-items-from-db": {
-      console.log("getCartItem",action)
+      console.log("getCartItem", action);
       return { ...state, items: [...state.items, action.data] };
     }
     case "add-item-to-cart": {
-      console.log("itemToAdd",action)
+      console.log("itemToAdd", action);
       //finding index of element to update in itemIds if exist to update qty
       const index = state.itemIds.findIndex(
         (item) => item.itemId === action.data.itemId
@@ -70,6 +70,12 @@ const reducer = (state, action) => {
         ...state,
         itemIds: state.itemIds.filter((item) => item.itemId !== action.itemId),
         items: state.items.filter((item) => item._id !== action.itemId),
+      };
+    }
+    case "loading": {
+      return {
+        ...state,
+        status: "loading",
       };
     }
     case "error-from-server": {
@@ -137,6 +143,12 @@ export const CartProvider = ({ children }) => {
       ...data,
     });
   };
+
+  const loadingFunc = () => {
+    dispatch({
+      type: "loading",
+    });
+  };
   return (
     <CartContext.Provider
       value={{
@@ -148,6 +160,7 @@ export const CartProvider = ({ children }) => {
           addItemToCart,
           updateCartQuantity,
           deleteCartItem,
+          loadingFunc,
         },
       }}
     >

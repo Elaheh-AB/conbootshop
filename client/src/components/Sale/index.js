@@ -6,10 +6,11 @@ import Loading from "../../Loading";
 const Sale = ({}) => {
   const {
     state: { onSaleproducts, status },
-    actions: { receiveOnSaleProductsFromServer, errorFromServer },
+    actions: { receiveOnSaleProductsFromServer, errorFromServer, loadingFunc },
   } = useContext(ProductsContext);
 
   useEffect(() => {
+    loadingFunc();
     const fetchOnSaleProducts = async () => {
       await fetch("/api/get-onSale-items")
         .then((res) => res.json())
@@ -47,9 +48,11 @@ const Sale = ({}) => {
 
   return (
     <>
-      {status === "loading" && <Loading />}
       <Wrapper>
-        {onSaleproducts &&
+        {status === "loading" ? (
+          <Loading />
+        ) : (
+          onSaleproducts &&
           onSaleproducts.map((product) => {
             return (
               <CardWrapper
@@ -122,7 +125,8 @@ const Sale = ({}) => {
                 </ContentWrapper>
               </CardWrapper>
             );
-          })}
+          })
+        )}
       </Wrapper>
     </>
   );

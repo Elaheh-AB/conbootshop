@@ -8,7 +8,7 @@ import { CartContext } from "../../CartContext";
 const Products = ({ start, limit }) => {
   const {
     state: { products, status },
-    actions: { receiveProductsFromServer, errorFromServer },
+    actions: { receiveProductsFromServer, errorFromServer, loadingFunc },
   } = useContext(ProductsContext);
 
   const {
@@ -17,6 +17,7 @@ const Products = ({ start, limit }) => {
   } = useContext(CartContext);
 
   useEffect(() => {
+    loadingFunc();
     const fetchProducts = async () => {
       await fetch(`/api/get-items?start=${start}&limit=${limit}`)
         .then((res) => res.json())
@@ -33,7 +34,7 @@ const Products = ({ start, limit }) => {
 
   const handleSubmit = async (isBuyNow, productId) => {
     const product = { itemId: productId, quantity: 1 };
-    
+
     if (isBuyNow) {
       //add to cart
       console.log("Buy now", product);
@@ -43,6 +44,7 @@ const Products = ({ start, limit }) => {
     }
   };
 
+  console.log(status, "STATUS");
   return (
     <>
       {}

@@ -5,7 +5,7 @@ export const ProductsContext = createContext(null);
 const initialState = {
   products: null,
   selectedProduct: null,
-  onSaleProducts:null,
+  onSaleProducts: null,
   status: "loading",
 };
 
@@ -23,6 +23,12 @@ const reducer = (state, action) => {
         ...state,
         onSaleproducts: action.data,
         status: action.status,
+      };
+    }
+    case "loading": {
+      return {
+        ...state,
+        status: "loading",
       };
     }
     case "error-from-server": {
@@ -59,6 +65,12 @@ export const ProductsProvider = ({ children }) => {
     });
   };
 
+  const loadingFunc = () => {
+    dispatch({
+      type: "loading",
+    });
+  };
+
   return (
     <ProductsContext.Provider
       value={{
@@ -67,6 +79,7 @@ export const ProductsProvider = ({ children }) => {
           receiveProductsFromServer,
           receiveOnSaleProductsFromServer,
           errorFromServer,
+          loadingFunc,
         },
       }}
     >

@@ -57,7 +57,7 @@ const products = [
 const LatestProducts = () => {
   return (
     <Wrapper>
-      <Title>Our lastest products</Title>
+      <Title>Our latest products</Title>
       <WrapperProducts>
         <BsArrowLeftCircle className="svg" />
         <Products start={1} limit={4} />

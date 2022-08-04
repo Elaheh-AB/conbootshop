@@ -6,8 +6,13 @@ import { CartContext } from "../../CartContext";
 
 const Cart = () => {
   const {
-    state: { itemIds, items },
-    actions: { fetchCartItems, updateCartQuantity, deleteCartItem },
+    state: { itemIds, items, status },
+    actions: {
+      fetchCartItems,
+      updateCartQuantity,
+      deleteCartItem,
+      loadingFunc,
+    },
   } = useContext(CartContext);
 
   return (
@@ -28,6 +33,8 @@ const Cart = () => {
                 itemQuantity={itemIds[index].quantity}
                 updateCartQuantity={updateCartQuantity}
                 deleteCartItem={deleteCartItem}
+                loadingFunc={loadingFunc}
+                status={status}
               />
             );
           })}
