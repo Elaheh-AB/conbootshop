@@ -26,7 +26,7 @@ const App = () => {
           _id: "82638433-3b75-4969-a0e8-2969b3872cf2",
           name: "Richard Belliveau",
           email: "richard.belivo@gmail.com",
-          cartId: "82638433-3b75-4969-a0e8-2969b3872cf8",
+          cartId: "4cf61881-d47f-4d88-9925-252d4dd09055",
         },
         status: "idle",
       });
