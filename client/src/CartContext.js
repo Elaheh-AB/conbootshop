@@ -6,7 +6,7 @@ export const CartContext = createContext(null);
 
 const initialState = {
   id: null,
-  itemIds: null,
+  itemIds: [],
   status: "loading",
   items: [],
 };
@@ -22,12 +22,56 @@ const reducer = (state, action) => {
       };
     }
     case "get-cart-items-from-db": {
+      console.log("getCartItem",action)
       return { ...state, items: [...state.items, action.data] };
     }
-    // case "update-cart-quantity": {
-    //   console.log(action, "ACTION");
-    //   return { ...state, itemIds: action.itemIds };
-    // }
+    case "add-item-to-cart": {
+      console.log("itemToAdd",action)
+      //finding index of element to update in itemIds if exist to update qty
+      const index = state.itemIds.findIndex(
+        (item) => item.itemId === action.data.itemId
+      );
+
+      if (index > 0) {
+        //making a new array
+        const newArray = [...state.itemIds];
+        //changing value in the new array
+        newArray[index].quantity = action.quantity + 1;
+
+        return {
+          ...state,
+          itemIds: newArray,
+        };
+      } else {
+        // add a new line in the object cart
+        return {
+          ...state,
+          itemIds: [...state.itemIds, action.data],
+        };
+      }
+    }
+    case "update-cart-quantity": {
+      //finding index of element to update in itemIds
+      const index = state.itemIds.findIndex(
+        (item) => item.itemId == action.itemId
+      );
+      //making a new array
+      const newArray = [...state.itemIds];
+      //changing value in the new array
+      newArray[index].quantity = action.quantity;
+
+      return {
+        ...state,
+        itemIds: newArray,
+      };
+    }
+    case "delete-cart-item": {
+      return {
+        ...state,
+        itemIds: state.itemIds.filter((item) => item.itemId !== action.itemId),
+        items: state.items.filter((item) => item._id !== action.itemId),
+      };
+    }
     case "error-from-server": {
       return {
         status: action.status,
@@ -44,13 +88,6 @@ export const CartProvider = ({ children }) => {
   const getCartInfoFromDb = (data) => {
     dispatch({
       type: "get-cart-info-from-db",
-      ...data,
-    });
-  };
-
-  const errorFromServer = (data) => {
-    dispatch({
-      type: "error-from-server",
       ...data,
     });
   };
@@ -73,47 +110,33 @@ export const CartProvider = ({ children }) => {
       });
   };
 
-  // const updateCartQuantity = async (data) => {
-  //   const itemFix = [...state.itemIds];
-  //   itemFix.map((item) => {
-  //     if (item._id === data._id) {
-  //       return (item.quanity = data.quantity);
-  //     }
-  //   });
-  //   await fetch(`/api/update-cart`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(itemFix),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       dispatch({
-  //         type: "update-cart-quantity",
-  //         ...data,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       errorFromServer(err);
-  //     });
-  // };
-  // useEffect(() => {
-  //   fetch("/api/get-cart/4cf61881-d47f-4d88-9925-252d4dd09055")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setCurrentCart(data.data);
-  //       setStatusCart("idle");
-  //     })
-  //     .catch(() => {
-  //       setStatusCart("error");
-  //     });
-  // }, []);
+  const addItemToCart = async (data) => {
+    dispatch({
+      type: "add-item-to-cart",
+      data,
+    });
+  };
 
-  // if (statusCart === "error") {
-  //   return <NotFound />;
-  // }
+  const updateCartQuantity = async (data) => {
+    dispatch({
+      type: "update-cart-quantity",
+      ...data,
+    });
+  };
 
+  const deleteCartItem = async (data) => {
+    dispatch({
+      type: "delete-cart-item",
+      ...data,
+    });
+  };
+
+  const errorFromServer = (data) => {
+    dispatch({
+      type: "error-from-server",
+      ...data,
+    });
+  };
   return (
     <CartContext.Provider
       value={{
@@ -122,6 +145,9 @@ export const CartProvider = ({ children }) => {
           getCartInfoFromDb,
           errorFromServer,
           fetchCartItems,
+          addItemToCart,
+          updateCartQuantity,
+          deleteCartItem,
         },
       }}
     >

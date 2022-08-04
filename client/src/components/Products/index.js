@@ -3,12 +3,18 @@ import { BsCartPlus } from "react-icons/bs";
 import { ProductsContext } from "../../ProductsContext";
 import { useEffect, useContext } from "react";
 import Loading from "../../Loading";
+import { CartContext } from "../../CartContext";
 
 const Products = ({ start, limit }) => {
   const {
     state: { products, status },
     actions: { receiveProductsFromServer, errorFromServer },
   } = useContext(ProductsContext);
+
+  const {
+    state: {},
+    actions: { addItemToCart },
+  } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,12 +31,14 @@ const Products = ({ start, limit }) => {
     fetchProducts();
   }, []);
 
-  const handleSubmit = (isBuyNow, productId) => {
+  const handleSubmit = async (isBuyNow, productId) => {
+    const product = { itemId: productId, quantity: 1 };
+    
     if (isBuyNow) {
       //add to cart
-      console.log("Buy now", productId);
+      console.log("Buy now", product);
     } else {
-      console.log("Add cart", productId);
+      await addItemToCart(product);
       //add to cart
     }
   };
