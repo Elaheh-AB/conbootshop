@@ -3,7 +3,6 @@ import GlobalStyles from "../GlobalStyles";
 import NotFound from "../NotFound";
 import Home from "./Home";
 import Products from "./Products";
-import Sale from "./Sale";
 import Profile from "./Profile";
 import Cart from "./Cart";
 import Landing from "./Landing";
@@ -63,9 +62,9 @@ const App = () => {
             <Route path="/" element={<Landing />} />
             <Route
               path="/products"
-              element={<Products start={1} limit={50} />}
+              element={<Products start={1} limit={50} discount={false} />}
             />
-            <Route path="/onSale" element={<Sale />} />
+            <Route path="/onSale" element={<Products discount={true} />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/confirmation" element={<Confirmation />} />

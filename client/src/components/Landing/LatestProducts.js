@@ -60,7 +60,7 @@ const LatestProducts = () => {
       <Title>Our lastest products</Title>
       <WrapperProducts>
         <BsArrowLeftCircle className="svg" />
-        <Products start={1} limit={4} />
+        <Products start={1} limit={4} discount={false} />
         <BsArrowRightCircle className="svg" />
       </WrapperProducts>
     </Wrapper>

@@ -4,14 +4,15 @@ import ServicesBanner from "./ServicesBanner";
 import styled from "styled-components";
 import LatestProducts from "./LatestProducts";
 import SocialMedia from "./SocialMedia";
-
 const Landing = () => {
+
   return (
     <Wrapper>
       <MainBanner />
       <DiscountBanner />
       <ServicesBanner />
-      <LatestProducts />
+      {/* <LatestProducts />
+      */}
       <SocialMedia />
     </Wrapper>
   );
