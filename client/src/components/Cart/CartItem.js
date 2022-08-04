@@ -54,10 +54,6 @@ const CartItem = ({
               />
               <label>Quantity</label>
             </QuantityWrapper>
-            <ItemTotal>
-              <span>Item Total:</span>
-              <span style={{ fontWeight: "bold" }}></span>
-            </ItemTotal>
             <button onClick={() => deleteCartItem({ itemId: item._id })}>
               <BsCartX className="svg" />
             </button>
@@ -112,7 +108,7 @@ const StatsWrapper = styled.div`
 
 const QuantityWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
 `;
 
 const ItemPrice = styled.div`
