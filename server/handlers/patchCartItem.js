@@ -21,7 +21,7 @@ const updateCart = async (req, res) => {
     // connect to the database (db name is provided as an argument to the function)
     const db = client.db(dbName);
     console.log("connected!");
-
+    console.log("cartId", cartId);
     const result = await db
       .collection("cart")
       .updateOne(
@@ -41,6 +41,9 @@ const updateCart = async (req, res) => {
     }
   } catch (err) {
     console.log(err.stack);
+    return res
+      .status(404)
+      .json({ status: 404, cartId, message: "can't update the cart" });
   } finally {
     client.close();
     console.log("disconnected!");
@@ -48,5 +51,5 @@ const updateCart = async (req, res) => {
 };
 
 module.exports = {
-    updateCart,
+  updateCart,
 };

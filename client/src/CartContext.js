@@ -22,17 +22,16 @@ const reducer = (state, action) => {
       };
     }
     case "get-cart-items-from-db": {
-      console.log("getCartItem",action)
+      console.log("getCartItem", action);
       return { ...state, items: [...state.items, action.data] };
     }
     case "add-item-to-cart": {
-      console.log("itemToAdd",action)
       //finding index of element to update in itemIds if exist to update qty
       const index = state.itemIds.findIndex(
         (item) => item.itemId === action.data.itemId
       );
 
-      if (index > 0) {
+      if (index >= 0) {
         //making a new array
         const newArray = [...state.itemIds];
         //changing value in the new array
@@ -111,6 +110,50 @@ export const CartProvider = ({ children }) => {
   };
 
   const addItemToCart = async (data) => {
+    let objectToSave = {};
+
+    const index = state.itemIds.findIndex((item) => item.itemId == data.itemId);
+
+    if (index >= 0) {
+      //finding index of element to update in itemIds
+      const index = state.itemIds.findIndex(
+        (item) => item.itemId == data.itemId
+      );
+      //making a new array
+      const newArray = [...state.itemIds];
+      //changing value in the new array
+      const qty = parseInt(data.quantity) + 1;
+      newArray[index].quantity = qty.toString();
+
+      objectToSave = {
+        _id: state.id,
+        itemIds: [...newArray],
+      };
+    } else {
+      objectToSave = {
+        _id: state.id,
+        itemIds: [...state.itemIds, { ...data }],
+      };
+    }
+
+    const params = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(objectToSave),
+    };
+    await fetch(`/api/update-cart`, params)
+      .then((res) => res.json())
+      .then((data) => {
+        addItemSuccess(data);
+      })
+      .catch((error) => {
+        errorFromServer(error);
+      });
+  };
+
+  const addItemSuccess = async (data) => {
     dispatch({
       type: "add-item-to-cart",
       data,
