@@ -1,56 +1,57 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsCartX } from "react-icons/bs";
 
-const CartItem = ({ item }) => {
-  const [itemQuantity, setItemQuantity] = useState(item.numInCart);
-  const [itemTotalPrice, setItemTotalPrice] = useState(
-    Number(item.price.replace("$", ""))
-  );
+const CartItem = ({ id, fetchCartItems }) => {
+  let item = null;
+  const fetchCartItem = async () => {
+    item = await fetchCartItems(id);
 
-  const handleQuantityChange = (e) => {
-    setItemQuantity(e.target.value);
-    setItemTotalPrice(
-      (
-        Math.round(Number(item.price.replace("$", "")) * e.target.value * 100) /
-        100
-      ).toFixed(2)
-    );
+    return item;
   };
 
-  const handleCartClick = () => {
-    setItemQuantity(0);
-    setItemTotalPrice(0.0);
-  };
+  useEffect(() => {
+    fetchCartItem();
+  }, [id]);
+
+  console.log(item);
+  console.log(id);
 
   return (
-    <Wrapper>
-      <ImgWrapper>
-        <img src={item.imageSrc} alt={item.name} key={`img-${item._id}`} />
-      </ImgWrapper>
-      <DescriptionWrapper>{item.name}</DescriptionWrapper>
-      <StatsWrapper>
-        <ItemPrice>
-          <span>Item price:</span>
-          <span style={{ fontWeight: "bold" }}>{item.price}</span>
-        </ItemPrice>
-        <QuantityWrapper>
-          <ItemQuantity
-            min={0}
-            max={item.numInStock}
-            type="number"
-            value={itemQuantity}
-            onChange={(e) => handleQuantityChange(e)}
-          />
-          <label>Quantity</label>
-        </QuantityWrapper>
-        <ItemTotal>
-          <span>Item Total:</span>
-          <span style={{ fontWeight: "bold" }}>${itemTotalPrice}</span>
-        </ItemTotal>
-        <BsCartX className="svg" onClick={handleCartClick} />
-      </StatsWrapper>
-    </Wrapper>
+    <>
+      {item && (
+        <Wrapper>
+          <ImgWrapper>
+            <img src={item.imageSrc} alt={item.name} key={`img-${item._id}`} />
+          </ImgWrapper>
+          <DescriptionWrapper>{item.name}</DescriptionWrapper>
+          <StatsWrapper>
+            <ItemPrice>
+              <span>Item price:</span>
+              <span style={{ fontWeight: "bold" }}>{item.price}</span>
+            </ItemPrice>
+            <QuantityWrapper>
+              <ItemQuantity
+                min={0}
+                max={item.numInStock}
+                type="number"
+                // value={itemQuantity}
+                // onChange={(e) => handleQuantityChange(e)}
+              />
+              <label>Quantity</label>
+            </QuantityWrapper>
+            <ItemTotal>
+              <span>Item Total:</span>
+              <span style={{ fontWeight: "bold" }}></span>
+            </ItemTotal>
+            <BsCartX
+              className="svg"
+              //  onClick={handleCartClick}
+            />
+          </StatsWrapper>
+        </Wrapper>
+      )}
+    </>
   );
 };
 
@@ -117,3 +118,23 @@ const ItemTotal = styled.div`
   justify-content: space-between;
   width: 25%;
 `;
+
+// const [itemQuantity, setItemQuantity] = useState(item.numInCart);
+// const [itemTotalPrice, setItemTotalPrice] = useState(
+//   Number(item.price.replace("$", ""))
+// );
+
+// const handleQuantityChange = (e) => {
+//   setItemQuantity(e.target.value);
+//   setItemTotalPrice(
+//     (
+//       Math.round(Number(item.price.replace("$", "")) * e.target.value * 100) /
+//       100
+//     ).toFixed(2)
+//   );
+// };
+
+// const handleCartClick = () => {
+//   setItemQuantity(0);
+//   setItemTotalPrice(0.0);
+// };
