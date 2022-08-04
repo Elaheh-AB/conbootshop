@@ -90,6 +90,12 @@ export default createGlobalStyle`
             transition: 0.5s ease-in-out;
             outline: 1px solid var(--warning);
         }
+        :disabled {
+            cursor: not-allowed;
+            background: transparent;
+            outline: 1px solid var(--font-color);
+
+        }
     }
 
     a {

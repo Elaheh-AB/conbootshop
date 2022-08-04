@@ -58,7 +58,6 @@ const Products = ({ start, limit, discount }) => {
     return finalPrice;
   };
   const handleSubmit = async (isBuyNow, productId) => {
-
     const qty = 1;
     const product = { itemId: productId.toString(), quantity: qty.toString() };
 
@@ -70,10 +69,8 @@ const Products = ({ start, limit, discount }) => {
     }
   };
 
-  console.log(status, "STATUS");
   return (
     <>
-      
       <Wrapper>
         {status === "loading" && <Loading />}
         {products &&
@@ -138,6 +135,7 @@ const Products = ({ start, limit, discount }) => {
                     key={`actionsWrapper-${product._id}`}
                   >
                     <ButtonBuyNow
+                      disabled={product.numInStock > 0 ? false : true}
                       onClick={() => handleSubmit(true, product._id)}
                       key={`buttonBuyNow-${product._id}`}
                     >
@@ -145,6 +143,7 @@ const Products = ({ start, limit, discount }) => {
                     </ButtonBuyNow>
 
                     <ButtonAddCart
+                      disabled={product.numInStock > 0 ? false : true}
                       onClick={() => handleSubmit(false, product._id)}
                       key={`buttonAddCart-${product._id}`}
                     >
