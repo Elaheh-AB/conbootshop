@@ -10,8 +10,13 @@ const Cart = () => {
     state: { currentUser },
   } = useContext(UserContext);
   const {
-    state: { id, itemIds },
-    actions: { getCartInfoFromDb, errorFromServer, fetchCartItems },
+    state: { id, itemIds, items },
+    actions: {
+      getCartInfoFromDb,
+      errorFromServer,
+      fetchCartItems,
+      updateCartQuantity,
+    },
   } = useContext(CartContext);
 
   useEffect(() => {
@@ -33,10 +38,16 @@ const Cart = () => {
       <h2>Your Cart</h2>
       <CartContainer>
         {itemIds &&
-          itemIds.map((id) => {
+          itemIds.map((id, index) => {
             console.log("MAP", id.itemId);
             return (
-              <CartItem item={id.itemId} fetchCartItems={fetchCartItems} />
+              <CartItem
+                id={id.itemId}
+                item={items[index]}
+                fetchCartItems={fetchCartItems}
+                itemQuantity={itemIds[index].quantity}
+                updateCartQuantity={updateCartQuantity}
+              />
             );
           })}
         <CartFooter />

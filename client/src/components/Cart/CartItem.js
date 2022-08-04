@@ -2,25 +2,33 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { BsCartX } from "react-icons/bs";
 
-const CartItem = ({ id, fetchCartItems }) => {
-  let item = null;
-  const fetchCartItem = async () => {
-    item = await fetchCartItems(id);
+const CartItem = ({
+  id,
+  fetchCartItems,
+  item,
+  itemQuantity,
+  updateCartQuantity,
+}) => {
+  const idFix = Number(id);
 
-    return item;
+  const fetchCartItem = async () => {
+    await fetchCartItems(idFix);
   };
 
   useEffect(() => {
     fetchCartItem();
   }, [id]);
 
-  console.log(item);
-  console.log(id);
+  // const handleQuantityChange = async (e) => {
+  //   const product = { _id: idFix, quantity: e.target.value };
+  //   await updateCartQuantity(product);
+  // };
 
   return (
     <>
       {item && (
         <Wrapper>
+          {console.log(item)}
           <ImgWrapper>
             <img src={item.imageSrc} alt={item.name} key={`img-${item._id}`} />
           </ImgWrapper>
@@ -35,7 +43,7 @@ const CartItem = ({ id, fetchCartItems }) => {
                 min={0}
                 max={item.numInStock}
                 type="number"
-                // value={itemQuantity}
+                value={itemQuantity}
                 // onChange={(e) => handleQuantityChange(e)}
               />
               <label>Quantity</label>

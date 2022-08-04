@@ -8,7 +8,7 @@ const initialState = {
   id: null,
   itemIds: null,
   status: "loading",
-  items: null,
+  items: [],
 };
 
 const reducer = (state, action) => {
@@ -22,8 +22,12 @@ const reducer = (state, action) => {
       };
     }
     case "get-cart-items-from-db": {
-      return { ...state, items: [...state.items, action.items] };
+      return { ...state, items: [...state.items, action.data] };
     }
+    // case "update-cart-quantity": {
+    //   console.log(action, "ACTION");
+    //   return { ...state, itemIds: action.itemIds };
+    // }
     case "error-from-server": {
       return {
         status: action.status,
@@ -59,8 +63,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const fetchCartItems = async (data) => {
-    console.log(data);
-    await fetch(`/api/get-item/${data.itemIds}`)
+    await fetch(`/api/get-item/${data}`)
       .then((res) => res.json())
       .then((data) => {
         getCartItemsFromDb(data);
@@ -70,6 +73,31 @@ export const CartProvider = ({ children }) => {
       });
   };
 
+  // const updateCartQuantity = async (data) => {
+  //   const itemFix = [...state.itemIds];
+  //   itemFix.map((item) => {
+  //     if (item._id === data._id) {
+  //       return (item.quanity = data.quantity);
+  //     }
+  //   });
+  //   await fetch(`/api/update-cart`, {
+  //     method: "PATCH",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(itemFix),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       dispatch({
+  //         type: "update-cart-quantity",
+  //         ...data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       errorFromServer(err);
+  //     });
+  // };
   // useEffect(() => {
   //   fetch("/api/get-cart/4cf61881-d47f-4d88-9925-252d4dd09055")
   //     .then((res) => res.json())
@@ -90,7 +118,11 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         state,
-        actions: { getCartInfoFromDb, errorFromServer, fetchCartItems },
+        actions: {
+          getCartInfoFromDb,
+          errorFromServer,
+          fetchCartItems,
+        },
       }}
     >
       {children}
