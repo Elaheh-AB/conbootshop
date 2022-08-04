@@ -71,6 +71,12 @@ const reducer = (state, action) => {
         items: state.items.filter((item) => item._id !== action.itemId),
       };
     }
+    case "loading": {
+      return {
+        ...state,
+        status: "loading",
+      };
+    }
     case "error-from-server": {
       return {
         status: action.status,
@@ -180,6 +186,12 @@ export const CartProvider = ({ children }) => {
       ...data,
     });
   };
+
+  const loadingFunc = () => {
+    dispatch({
+      type: "loading",
+    });
+  };
   return (
     <CartContext.Provider
       value={{
@@ -191,6 +203,7 @@ export const CartProvider = ({ children }) => {
           addItemToCart,
           updateCartQuantity,
           deleteCartItem,
+          loadingFunc,
         },
       }}
     >

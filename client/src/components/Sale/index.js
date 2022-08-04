@@ -3,49 +3,28 @@ import { BsCartPlus } from "react-icons/bs";
 import { ProductsContext } from "../../ProductsContext";
 import { useEffect, useContext } from "react";
 import Loading from "../../Loading";
-import { CartContext } from "../../CartContext";
-
-const Products = ({ start, limit, discount }) => {
+const Sale = ({}) => {
   const {
-    state: { products, status },
-    actions: { receiveProductsFromServer, errorFromServer, loadingFunc },
+    state: { onSaleproducts, status },
+    actions: { receiveOnSaleProductsFromServer, errorFromServer, loadingFunc },
   } = useContext(ProductsContext);
-
-  const {
-    state: {},
-    actions: { addItemToCart },
-  } = useContext(CartContext);
 
   useEffect(() => {
     loadingFunc();
-    const fetchProducts = async () => {
-      await fetch(`/api/get-items?start=${start}&limit=${limit}`)
-        .then((res) => res.json())
-        .then((data) => {
-          receiveProductsFromServer(data, { status: 200 });
-        })
-        .catch((err) => {
-          errorFromServer(err);
-          return console.log({ status: "error" });
-        });
-    };
     const fetchOnSaleProducts = async () => {
       await fetch("/api/get-onSale-items")
         .then((res) => res.json())
         .then((data) => {
-          receiveProductsFromServer(data, { status: 200 });
+          receiveOnSaleProductsFromServer(data, { status: 200 });
         })
         .catch((err) => {
           errorFromServer(err);
           return console.log({ status: "error" });
         });
     };
-    if (discount === true) {
-      fetchOnSaleProducts();
-    } else {
-      fetchProducts();
-    }
-  }, [discount]);
+    fetchOnSaleProducts();
+  }, []);
+
   const discountCalc = (price, discount) => {
     //change price from string to float
     const floatPrice = price.substr(1).replace(",", ".") * 1;
@@ -57,27 +36,24 @@ const Products = ({ start, limit, discount }) => {
     });
     return finalPrice;
   };
-  const handleSubmit = async (isBuyNow, productId) => {
-
-    const qty = 1;
-    const product = { itemId: productId.toString(), quantity: qty.toString() };
-
+  const handleSubmit = (isBuyNow, productId) => {
     if (isBuyNow) {
       //add to cart
-      console.log("Buy now", product);
+      console.log("Buy now", productId);
     } else {
-      await addItemToCart(product);
+      console.log("Add cart", productId);
+      //add to cart
     }
   };
 
-  console.log(status, "STATUS");
   return (
     <>
-      
       <Wrapper>
-        {status === "loading" && <Loading />}
-        {products &&
-          products.map((product) => {
+        {status === "loading" ? (
+          <Loading />
+        ) : (
+          onSaleproducts &&
+          onSaleproducts.map((product) => {
             return (
               <CardWrapper
                 className="card"
@@ -98,17 +74,12 @@ const Products = ({ start, limit, discount }) => {
                   key={`contentWrapper-${product._id}`}
                 >
                   <WrapperPrice>
-                    {discount === false && <PriceTag>{product.price}</PriceTag>}
-                    {discount === true && (
-                      <>
-                        {" "}
-                        <LastPriceTag>{product.price}</LastPriceTag>
-                        <OnSalePriceTag>
-                          ${discountCalc(product.price, product.onSale)}
-                        </OnSalePriceTag>
-                      </>
-                    )}
+                    <PriceTag>{product.price}</PriceTag>
+                    <OnSalePriceTag>
+                      ${discountCalc(product.price, product.onSale)}
+                    </OnSalePriceTag>
                   </WrapperPrice>
+
                   <h2 key={`h2-${product._id}`}>{product.name}</h2>
 
                   <DescriptionWrapper
@@ -154,7 +125,8 @@ const Products = ({ start, limit, discount }) => {
                 </ContentWrapper>
               </CardWrapper>
             );
-          })}
+          })
+        )}
       </Wrapper>
     </>
   );
@@ -238,7 +210,13 @@ const ImgWrapper = styled.div`
   width: 100%;
   height: 100%;
   transition: 0.5s;
-
+  span {
+    background-color: red;
+    color: white;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 5px;
+  }
   img {
     position: absolute;
     top: 50%;
@@ -283,7 +261,7 @@ const DescriptionWrapper = styled.div`
 
   h3 {
     color: (--font-color);
-    font-weight: 300;
+    font-weight: 200;
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -317,11 +295,20 @@ const ActionsWrapper = styled.div`
   visibility: hidden;
 `;
 
+const WrapperPrice = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const PriceTag = styled.h2`
   padding-bottom: 10px;
-  font-size: 1.5em;
+  font-size: 1em;
+  text-decoration: line-through;
 `;
-
+const OnSalePriceTag = styled.h2`
+  padding-bottom: 10px;
+  font-size: 1.25em;
+`;
 const ButtonBuyNow = styled.button`
   height: 30px;
   font-size: 20px;
@@ -331,18 +318,5 @@ const ButtonAddCart = styled.button`
   margin-left: 20px;
   height: 30px;
 `;
-const WrapperPrice = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const LastPriceTag = styled.h2`
-  padding-bottom: 10px;
-  font-size: 1em;
-  text-decoration: line-through;
-`;
-const OnSalePriceTag = styled.h2`
-  padding-bottom: 10px;
-  font-size: 1.25em;
-`;
-export default Products;
+
+export default Sale;
